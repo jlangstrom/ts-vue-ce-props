@@ -1,25 +1,26 @@
 # ts-vue-ce-props
 
-This is a project to exemplify when props are not correctly casted to primitives sent as attributes to custom elements when doing a production build with the @vue/compiler-sfc.
+This is a project to exemplify when props are not correctly converted to primitives sent as attributes to custom elements when doing a production build with the @vue/compiler-sfc.
 
-## Recommended IDE Setup
+## Test explanation
+When doing a **production** build when using type based props will not generate all runtime props. This seems to affect casting of primitive attributes sent to a vue3 custom element.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+For example:
+When sending a prop that is typed as a number (in the custom element) as an attribute to a vue3 webcomponent it is not converted to a number in the production build. But it is converted correctly in the dev-build. 
 
-## Type Support for `.vue` Imports in TS
+## Tests to display the difference:
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+This will do a DEV build and run the e2e test and it will be a **success** (props in component will be cast to correct types):
+```sh
+npm run issue:test:e2e:dev
+```
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+This will do a PRODUCTION build and run the e2e test and it will **fail** (number props will not be cast to correct types):
+```sh
+npm run issue:test:e2e:prod
+```
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
 
 ## Project Setup
 
@@ -39,30 +40,4 @@ npm run dev
 npm run build
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
 
-```sh
-npm run test:unit
-```
-
-### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
-
-```sh
-npm run test:e2e:dev
-```
-
-This runs the end-to-end tests against the Vite development server.
-It is much faster than the production build.
-
-But it's still recommended to test the production build with `test:e2e` before deploying (e.g. in CI environments):
-
-```sh
-npm run build
-npm run test:e2e
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
