@@ -20,6 +20,26 @@ This will do a PRODUCTION build and run the e2e test and it will **fail** (numbe
 npm run issue:test:e2e:prod
 ```
 
+## The Cypress test
+
+```javascript
+describe('Wrong prop types', () => {
+  it('print the type of the props', () => {
+    cy.visit('/')
+    cy.get('#appCe').shadow().find('p[t-id="propFoo"]').should("have.text", "number");
+    cy.get('#appCe').shadow().find('p[t-id="propBar"]').should("have.text", "number");
+    cy.get('#appCe').shadow().find('p[t-id="propBaz"]').should("have.text", "string");
+  })
+})
+```
+
+## The HTML being tested
+```html
+<app-ce id="appCe" foo="13" bar="37" baz="a string"></app-ce>
+```
+
+Props ``foo`` and ``bar`` are numbers in the vue custom element. But they are not converted to numbers if type based props are used in production build.
+
 
 
 ## Project Setup
